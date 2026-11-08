@@ -23,6 +23,27 @@ def test_peer_routes_skip_the_loopback_check_but_need_a_session(make_client):
     assert response.status_code == 404
 
 
+def test_allow_remote_accepts_non_loopback_requests(make_client, monkeypatch):
+    import main
+
+    monkeypatch.setattr(main, "ALLOW_REMOTE", True)
+    assert make_client("192.168.1.20", "http://127.0.0.1:8000").get("/").status_code == 200
+
+
+def test_allow_remote_still_refuses_foreign_host_headers(make_client, monkeypatch):
+    import main
+
+    monkeypatch.setattr(main, "ALLOW_REMOTE", True)
+    assert make_client("127.0.0.1", "http://evil.test").get("/").status_code == 403
+
+
+def test_allow_remote_still_refuses_other_websites(client, monkeypatch):
+    import main
+
+    monkeypatch.setattr(main, "ALLOW_REMOTE", True)
+    assert client.post("/cache/clear", headers={"Origin": "http://evil.test"}).status_code == 403
+
+
 def test_unknown_files_are_rejected(client, library):
     assert client.get("/mp3s/missing.mp3/info").status_code == 404
     assert client.get("/mp3s/..%5Csecret.mp3/info").status_code in (400, 404)

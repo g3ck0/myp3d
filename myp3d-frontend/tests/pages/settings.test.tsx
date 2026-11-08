@@ -97,14 +97,14 @@ describe('settings', () => {
     expect(accent()).toBe('#ffcc00');
 
     await user.click(within(dialog).getByRole('button', { name: 'Reset accent' }));
-    expect(accent()).toBe('#ff9ec4');
+    expect(accent()).toBe('#52c79c');
   });
 
   it('takes a hex code with or without the hash', async () => {
     const { user } = renderApp('/dashboard');
     const dialog = await openSettings(user);
     const field = within(dialog).getByLabelText('Accent colour');
-    expect(field).toHaveValue('ff9ec4');
+    expect(field).toHaveValue('52c79c');
 
     await user.clear(field);
     await user.type(field, 'ABCDEF');
@@ -123,10 +123,10 @@ describe('settings', () => {
     await user.clear(field);
     await user.type(field, 'zz12');
     expect(field).toHaveAttribute('aria-invalid', 'true');
-    expect(accent()).toBe('#ff9ec4');
+    expect(accent()).toBe('#52c79c');
 
     await user.tab();
-    expect(field).toHaveValue('ff9ec4');
+    expect(field).toHaveValue('52c79c');
     expect(field).toHaveAttribute('aria-invalid', 'false');
   });
 

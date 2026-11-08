@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 
 from routers import albums, cache, download, export, favorites, health, mp3s, music, peer, playlists, queue, search, spotify, stats, sync, system, youtube
 from services import database_sync, db, date_service, favorite_playlist, favorite_service, music_playlist_service, music_service, playlist_service, queue_service
-from services.config import API_PORT, API_RELOAD, VERSION
+from services.config import ALLOW_REMOTE, API_PORT, API_RELOAD, VERSION
 from services.mp3_service import sweep_partial_files
 from services.discovery_service import discovery
 from services.errors import AppError
@@ -25,6 +25,15 @@ def _is_loopback(host: Optional[str]) -> bool:
         return ipaddress.ip_address(host or "").is_loopback
     except ValueError:
         return False
+
+
+def _request_allowed(client: Optional[str], host_header: Optional[str], origin: Optional[str]) -> bool:
+    if origin is not None and origin not in ALLOWED_ORIGINS:
+        return False
+    # ALLOW_REMOTE relaxes the client check for Docker port-mapping, but the
+    # Host header must still be loopback: that blocks DNS-rebinding pages,
+    # which send no Origin header and would otherwise bypass the allowlist.
+    return (ALLOW_REMOTE or _is_loopback(client)) and _is_loopback(host_header)
 
 
 @asynccontextmanager
@@ -65,7 +74,7 @@ async def local_only(request: Request, call_next):
     client = request.client.host if request.client else None
     host_header = urlsplit(f"//{request.headers.get('host', '')}").hostname
     origin = request.headers.get("origin")
-    if _is_loopback(client) and _is_loopback(host_header) and (origin is None or origin in ALLOWED_ORIGINS):
+    if _request_allowed(client, host_header, origin):
         return await call_next(request)
     return JSONResponse(status_code=403, content={"detail": "Only this device can use the app"})
 

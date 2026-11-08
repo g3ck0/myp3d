@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+downloads/
+tests/.sandbox/
+myp3d.db
+myp3d.db-*
+*.log
+.env
+ffmpeg.exe
+ffprobe.exe
+.git

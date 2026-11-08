@@ -82,7 +82,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-tint);
 }
 
 .query-result-thumb-placeholder {
@@ -134,7 +134,7 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: #000;
+  background: var(--color-bg);
 }
 
 .query-player-wrap {
@@ -165,7 +165,7 @@
   aspect-ratio: 16 / 9;
   padding: var(--space-4);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass-tint);
   color: var(--color-text-muted);
   text-align: center;
 }
