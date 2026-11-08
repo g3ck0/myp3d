@@ -7,6 +7,10 @@ load_dotenv()
 VERSION = "1.0.0"
 
 USE_SYSTEM_FFMPEG = os.getenv("USE_SYSTEM_FFMPEG", "false").lower() == "true"
+# Docker publishes ports through a bridge, so requests arrive from the gateway
+# address rather than loopback. Set this to accept them (and only them: the
+# Origin check still applies).
+ALLOW_REMOTE = os.getenv("MYP3D_ALLOW_REMOTE", "false").lower() == "true"
 BASE_DIR = Path(__file__).parent.parent
 OUTPUT_DIR = Path(os.getenv("MYP3D_LIBRARY_DIR") or BASE_DIR / "downloads")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

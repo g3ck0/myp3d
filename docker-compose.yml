@@ -1,0 +1,38 @@
+name: myp3d
+
+services:
+  backend:
+    build:
+      context: ./myp3d-backend
+    image: myp3d-backend:local
+    env_file:
+      - path: ./myp3d-backend/.env
+        required: false
+    environment:
+      API_PORT: "8000"
+      USE_SYSTEM_FFMPEG: "true"
+      MYP3D_LIBRARY_DIR: /data/downloads
+      MYP3D_DB_PATH: /data/db/myp3d.db
+      # Docker delivers port-mapped requests from the bridge gateway, not
+      # loopback. Keep the ports off untrusted networks.
+      MYP3D_ALLOW_REMOTE: "true"
+    ports:
+      - "8000:8000"
+      - "47817:47817/udp"
+    volumes:
+      - ./data/downloads:/data/downloads
+      - ./data/db:/data/db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./myp3d-frontend
+      args:
+        VITE_API_BASE_URL: ${MYP3D_API_URL:-http://localhost:8000}
+    image: myp3d-frontend:local
+    ports:
+      - "5173:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

@@ -27,6 +27,7 @@ atexit.register(shutil.rmtree, SESSION_DIR, True)
 os.environ.update(
     MYP3D_LIBRARY_DIR=str(LIBRARY_DIR),
     MYP3D_DB_PATH=str(DB_FILE),
+    MYP3D_ALLOW_REMOTE="false",
     YTDLP_COOKIES_BROWSER="firefox",
     YTDLP_COOKIES_PROFILE="",
     YTDLP_PLAYER_CLIENTS="default,tv,ios",

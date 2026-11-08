@@ -29,7 +29,7 @@ A YouTube-to-MP3 downloader and music library that runs on your own machine. Fas
 You need Python 3.10+, [Node](https://nodejs.org) 20.19+ or 22.12+ and [ffmpeg](https://ffmpeg.org/download.html).
 
 ```bash
-git clone https://github.com/Lonjz/myp3d.git
+git clone <your-repo-url>
 cd myp3d
 
 cd myp3d-backend
@@ -62,6 +62,25 @@ Start both servers from the repo root, then open http://localhost:5173.
 | Space | Play or pause |
 | Ctrl/⌘ S | Save on an edit page |
 | `?` | All shortcuts |
+
+## Docker
+
+The repo ships a Compose file that runs the backend and a production build of the frontend.
+
+```bash
+kiri compose up -d --build
+```
+
+Open http://localhost:5173. The API stays on http://localhost:8000.
+
+- Songs go to `./data/downloads`; the database goes to `./data/db/myp3d.db`.
+- `kiri compose logs -f` follows the logs, `kiri compose down` stops everything.
+- Set `MYP3D_API_URL` when starting Compose if the browser should reach the API somewhere other than `http://localhost:8000`.
+- Compose sets `MYP3D_ALLOW_REMOTE=true` because Docker delivers port-mapped requests from the bridge gateway rather than loopback. Keep the ports off untrusted networks.
+- The backend image includes ffmpeg and Node.js (yt-dlp uses Node for YouTube's JavaScript challenges).
+- `YTDLP_COOKIES_BROWSER` can't read a browser profile from inside the container. Leave it empty or mount a profile.
+- Apple Music sync needs macOS, so it returns 501 in the container.
+- LAN sync discovery uses UDP broadcast, which does not cross Docker's default bridge network.
 
 ## Config
 
