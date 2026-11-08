@@ -402,7 +402,7 @@
   margin-bottom: var(--space-1);
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-tint);
   box-shadow: var(--shadow-sm);
 }
 
@@ -645,7 +645,7 @@
 .calendar__day {
   aspect-ratio: 1;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-tint);
   transition:
     box-shadow var(--duration-fast) var(--ease-standard),
     filter var(--duration-fast) var(--ease-standard);
@@ -794,7 +794,7 @@
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-surface-hover);
   border: 1px solid var(--color-border);
   color: inherit;
   text-decoration: none;

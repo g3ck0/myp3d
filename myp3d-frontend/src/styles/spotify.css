@@ -118,7 +118,7 @@
 }
 
 .spotify-row:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-surface-hover);
 }
 
 .spotify-row.is-queued {

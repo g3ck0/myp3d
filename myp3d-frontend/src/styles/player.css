@@ -42,7 +42,7 @@
   height: 3rem;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-hover);
   box-shadow: var(--shadow-sm);
   color: var(--color-text-secondary);
 }
@@ -311,7 +311,7 @@
   height: 2.5rem;
   overflow: hidden;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-hover);
   color: var(--color-text-secondary);
 }
 
@@ -481,7 +481,7 @@
   overflow: hidden;
   border: 0;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-hover);
   color: var(--color-text-secondary);
   cursor: pointer;
 }

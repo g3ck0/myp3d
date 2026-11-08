@@ -144,12 +144,12 @@
   height: 2.5rem;
   overflow: hidden;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-hover);
   color: var(--color-text-secondary);
 }
 
 .spotlight-row.is-active .spotlight-row__art {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--color-surface-selected);
   color: var(--color-text);
 }
 
@@ -340,7 +340,7 @@
   margin-bottom: var(--space-2);
   overflow: hidden;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-hover);
   box-shadow: var(--shadow-md);
   color: var(--color-text-secondary);
 }
