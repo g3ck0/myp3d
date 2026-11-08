@@ -75,8 +75,8 @@ Open http://localhost:5173. The API stays on http://localhost:8000.
 
 - Songs go to `./data/downloads`; the database goes to `./data/db/myp3d.db`.
 - `kiri compose logs -f` follows the logs, `kiri compose down` stops everything.
-- Set `MYP3D_API_URL` when starting Compose if the browser should reach the API somewhere other than `http://localhost:8000`.
-- Compose sets `MYP3D_ALLOW_REMOTE=true` because Docker delivers port-mapped requests from the bridge gateway rather than loopback. Keep the ports off untrusted networks.
+- `MYP3D_API_URL` is a **build argument**: it's baked into the frontend bundle at build time, so changing it requires `kiri compose up -d --build`. Set it if the browser should reach the API somewhere other than `http://localhost:8000`.
+- Compose publishes the ports on all interfaces so LAN peer sync works across devices on your local network. Run the stack only on a network you trust. Compose sets `MYP3D_ALLOW_REMOTE=true` because Docker delivers port-mapped requests from the bridge gateway rather than loopback; the `Origin` allowlist still rejects other websites.
 - The backend image includes ffmpeg and Node.js (yt-dlp uses Node for YouTube's JavaScript challenges).
 - `YTDLP_COOKIES_BROWSER` can't read a browser profile from inside the container. Leave it empty or mount a profile.
 - Apple Music sync needs macOS, so it returns 501 in the container.
@@ -92,6 +92,7 @@ Backend settings go in `myp3d-backend/.env`. Copy `.env.example` to start.
 | `MYP3D_DB_PATH` | `myp3d-backend/myp3d.db` | Playlists, favourites, the download queue and sync state |
 | `API_PORT` | `8000` | Backend port |
 | `API_RELOAD` | `false` | Restart the backend when its code changes |
+| `MYP3D_ALLOW_REMOTE` | `false` | Allow requests whose client address isn't loopback (Docker sets this; the `Origin` allowlist still applies) |
 | `USE_SYSTEM_FFMPEG` | `false` | Ignore `ffmpeg.exe` and use ffmpeg from `PATH` |
 | `YTDLP_COOKIES_BROWSER` | | Browser to borrow YouTube cookies from when YouTube asks to sign in, such as `firefox` ([why](https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp)) |
 | `YTDLP_COOKIES_PROFILE` | | Browser profile name or path |
@@ -137,7 +138,7 @@ The first run generates about 160 MB of audio in `myp3d-backend/tests/.sandbox/`
 
 ## Notes
 
-- The API only answers requests from the app on the same machine. Other computers can only reach the sync routes under `/peer`.
+- By default the API only answers requests from this machine. With `MYP3D_ALLOW_REMOTE=true` (which Docker sets) it also answers clients on the local network, while the `Origin` allowlist still blocks other websites. Without it, other computers can only reach the sync routes under `/peer`.
 - Interactive API docs are at http://localhost:8000/docs.
 - Only download things you have the right to.
 
