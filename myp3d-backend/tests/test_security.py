@@ -27,7 +27,14 @@ def test_allow_remote_accepts_non_loopback_requests(make_client, monkeypatch):
     import main
 
     monkeypatch.setattr(main, "ALLOW_REMOTE", True)
-    assert make_client("192.168.1.20", "http://192.168.1.5:8000").get("/").status_code == 200
+    assert make_client("192.168.1.20", "http://127.0.0.1:8000").get("/").status_code == 200
+
+
+def test_allow_remote_still_refuses_foreign_host_headers(make_client, monkeypatch):
+    import main
+
+    monkeypatch.setattr(main, "ALLOW_REMOTE", True)
+    assert make_client("127.0.0.1", "http://evil.test").get("/").status_code == 403
 
 
 def test_allow_remote_still_refuses_other_websites(client, monkeypatch):

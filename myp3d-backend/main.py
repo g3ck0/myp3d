@@ -30,7 +30,10 @@ def _is_loopback(host: Optional[str]) -> bool:
 def _request_allowed(client: Optional[str], host_header: Optional[str], origin: Optional[str]) -> bool:
     if origin is not None and origin not in ALLOWED_ORIGINS:
         return False
-    return ALLOW_REMOTE or (_is_loopback(client) and _is_loopback(host_header))
+    # ALLOW_REMOTE relaxes the client check for Docker port-mapping, but the
+    # Host header must still be loopback: that blocks DNS-rebinding pages,
+    # which send no Origin header and would otherwise bypass the allowlist.
+    return (ALLOW_REMOTE or _is_loopback(client)) and _is_loopback(host_header)
 
 
 @asynccontextmanager
