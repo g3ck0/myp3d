@@ -18,6 +18,9 @@ RUN ln -sf /usr/local/bin/node /usr/bin/node
 
 RUN apk add --no-cache ffmpeg libstdc++ ca-certificates
 
+# Node is linked against libstdc++, so assert it runs only after that install.
+RUN node --version
+
 WORKDIR /app
 
 COPY requirements.txt ./
