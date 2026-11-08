@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
     <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#bbf226"/>
-      <stop offset="0.55" stop-color="#d8ff3f"/>
-      <stop offset="1" stop-color="#e5ff6b"/>
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.55" stop-color="#52c79c"/>
+      <stop offset="1" stop-color="#34d399"/>
     </linearGradient>
     <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#fff" stop-opacity="0.45"/>
@@ -12,7 +12,7 @@
   </defs>
   <rect width="64" height="64" rx="15" fill="url(#tile)"/>
   <rect x="1" y="1" width="62" height="62" rx="14" fill="url(#sheen)"/>
-  <g transform="translate(12 12) scale(1.6667)" fill="none" stroke="#0d0f0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(12 12) scale(1.6667)" fill="none" stroke="#090d0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M2 10v3"/>
     <path d="M6 6v11"/>
     <path d="M10 3v18"/>
