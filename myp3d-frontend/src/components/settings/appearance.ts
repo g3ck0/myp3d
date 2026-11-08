@@ -3,7 +3,7 @@ import { readStoredValue } from '../../hooks/usePersistentState';
 export const APPEARANCE_KEY = 'appearance';
 
 export type ThemeId = 'glass' | 'amoled';
-export type PaletteId = 'dusk' | 'ocean' | 'forest' | 'ember' | 'mono';
+export type PaletteId = 'lime' | 'dusk' | 'ocean' | 'forest' | 'ember' | 'mono';
 export type Density = 'comfortable' | 'compact';
 
 export interface Appearance {
@@ -24,6 +24,7 @@ export interface Palette {
 }
 
 export const PALETTES: readonly Palette[] = [
+  { id: 'lime', label: 'Lime', accent: '#d8ff3f', accentAlt: '#c4f528', background: '#141416' },
   { id: 'dusk', label: 'Dusk', accent: '#ff9ec4', accentAlt: '#b9a2ff', background: '#17122b' },
   { id: 'ocean', label: 'Ocean', accent: '#6fd6e8', accentAlt: '#8fb4ff', background: '#0d1c2e' },
   { id: 'forest', label: 'Forest', accent: '#9fe0a8', accentAlt: '#d6dc8a', background: '#101f18' },
@@ -41,7 +42,7 @@ export const IMAGE_BLUR_RANGE = { min: 0, max: 40 } as const;
 
 export const DEFAULT_APPEARANCE: Appearance = {
   theme: 'glass',
-  palette: 'dusk',
+  palette: 'lime',
   accents: { glass: null, amoled: null },
   imageDim: 45,
   imageBlur: 0,
