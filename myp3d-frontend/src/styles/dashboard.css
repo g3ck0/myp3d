@@ -448,7 +448,7 @@
 
 .album-tile__play {
   pointer-events: auto;
-  box-shadow: 0 8px 22px rgba(8, 4, 24, 0.45), inset 0 1px 0 rgba(255, 255, 255, calc(0.45 * var(--bevel)));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, calc(0.45 * var(--bevel)));
   opacity: 0;
   transform: translateY(6px);
   transition:

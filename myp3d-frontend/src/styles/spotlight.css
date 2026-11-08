@@ -20,7 +20,7 @@
   overflow: hidden;
   border-radius: var(--radius-xl);
   background: var(--glass-sheen), var(--glass-tint-overlay);
-  box-shadow: var(--glass-inner), 0 28px 80px rgba(8, 4, 24, 0.5);
+  box-shadow: var(--glass-inner), 0 28px 80px rgba(0, 0, 0, 0.6);
   -webkit-backdrop-filter: var(--glass-blur-heavy);
   backdrop-filter: var(--glass-blur-heavy);
   transform-origin: 50% 0;
