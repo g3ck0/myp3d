@@ -66,8 +66,8 @@ describe('settings', () => {
     const dialog = await openSettings(user);
     await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
     expect(document.documentElement.dataset.theme).toBe('amoled');
-    expect(document.documentElement.style.getPropertyValue('--color-accent')).toBe('#1ed760');
-    expect(meta.content).toBe('#000000');
+    expect(document.documentElement.style.getPropertyValue('--color-accent')).toBe('#52c79c'); // Mint palette accent
+    expect(meta.content).toBe('#0e0e12'); // Mint palette background
     expect(stored().theme).toBe('amoled');
 
     unmount();
@@ -87,15 +87,25 @@ describe('settings', () => {
   it('keeps a separate custom accent for each theme', async () => {
     const { user } = renderApp('/dashboard');
     const dialog = await openSettings(user);
+    
+    // Set a custom accent for Glass
     fireEvent.change(within(dialog).getByLabelText('Accent colour'), { target: { value: '#ffcc00' } });
     expect(accent()).toBe('#ffcc00');
-
+    
+    // Switch to AMOLED and set a custom accent there
     await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
-    expect(accent()).toBe('#1ed760');
-
+    fireEvent.change(within(dialog).getByLabelText('Accent colour'), { target: { value: '#ff8800' } });
+    expect(accent()).toBe('#ff8800');
+    
+    // Switch back to Glass - should still have the original custom accent
     await user.click(within(dialog).getByRole('button', { name: 'Glass' }));
     expect(accent()).toBe('#ffcc00');
-
+    
+    // Switch back to AMOLED - should still have the AMOLED custom accent
+    await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
+    expect(accent()).toBe('#ff8800');
+    
+    // Reset accent for AMOLED
     await user.click(within(dialog).getByRole('button', { name: 'Reset accent' }));
     expect(accent()).toBe('#52c79c');
   });
@@ -134,7 +144,7 @@ describe('settings', () => {
     const { user } = renderApp('/dashboard');
     const dialog = await openSettings(user);
     await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
-    expect(within(dialog).getByLabelText('Accent colour')).toHaveValue('1ed760');
+    expect(within(dialog).getByLabelText('Accent colour')).toHaveValue('52c79c');
   });
 
   it('picking a palette replaces a custom glass accent', async () => {
@@ -178,18 +188,18 @@ describe('settings', () => {
     await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
 
     expect(backdropImage()).toBeNull();
-    expect(within(dialog).getByRole('button', { name: 'Change background image' })).toBeDisabled();
+    expect(within(dialog).getByRole('button', { name: 'Change background image' })).toBeEnabled();
   });
 
-  it('keeps the glass controls visible but locked on AMOLED', async () => {
+  it('allows palette selection in AMOLED mode', async () => {
     const { user } = renderApp('/dashboard');
     const dialog = await openSettings(user);
     expect(within(dialog).getByRole('button', { name: 'Ocean' })).toBeEnabled();
 
     await user.click(within(dialog).getByRole('button', { name: 'AMOLED' }));
 
-    expect(within(dialog).getByRole('button', { name: 'Ocean' })).toBeDisabled();
-    expect(within(dialog).getByText('Switch the theme to Glass to use these')).toBeInTheDocument();
+    expect(within(dialog).getByRole('button', { name: 'Ocean' })).toBeEnabled();
+    expect(within(dialog).queryByText('Switch the theme to Glass to use these')).not.toBeInTheDocument();
     expect(within(dialog).getByLabelText('Accent colour')).toBeEnabled();
   });
 

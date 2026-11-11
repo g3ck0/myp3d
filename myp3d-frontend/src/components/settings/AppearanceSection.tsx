@@ -134,18 +134,17 @@ export function AppearanceSection() {
       </SettingsRow>
 
       <h3 className="settings-heading">
-        Glass
-        {!isGlass && <span className="settings-heading__note">Switch the theme to Glass to use these</span>}
+        Palette
       </h3>
 
-      <fieldset className="settings-group" aria-label="Glass" disabled={!isGlass}>
+      <fieldset className="settings-group" aria-label="Palette">
         <SettingsRow icon={SwatchBook} label="Palette" hint="Backdrop and accent colours">
           {PALETTES.map((palette) => (
             <PaletteSwatch
               key={palette.id}
               palette={palette}
               active={appearance.palette === palette.id}
-              onSelect={() => update({ palette: palette.id, accents: { ...appearance.accents, glass: null } })}
+              onSelect={() => update({ palette: palette.id, accents: { ...appearance.accents, [appearance.theme]: null } })}
             />
           ))}
         </SettingsRow>

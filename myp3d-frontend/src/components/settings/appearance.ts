@@ -104,7 +104,8 @@ function paletteOf(appearance: Appearance): Palette {
 }
 
 export function defaultAccent(appearance: Appearance): string {
-  return appearance.theme === 'amoled' ? AMOLED_ACCENT : paletteOf(appearance).accent;
+  // Always use the palette's accent color, regardless of theme
+  return paletteOf(appearance).accent;
 }
 
 function isDarkColor(hex: string): boolean {
@@ -117,11 +118,9 @@ function isDarkColor(hex: string): boolean {
 
 function accentPair(appearance: Appearance): [string, string] {
   const custom = appearance.accents[appearance.theme];
-  if (appearance.theme === 'amoled') {
-    const accent = custom ?? AMOLED_ACCENT;
-    return [accent, accent];
-  }
   if (custom) return [custom, `color-mix(in srgb, ${custom} 62%, white)`];
+  
+  // Use the palette colors for both themes
   const palette = paletteOf(appearance);
   return [palette.accent, palette.accentAlt];
 }
@@ -145,6 +144,7 @@ export function applyAppearance(appearance: Appearance): void {
   root.style.setProperty('--backdrop-image-dim', String(appearance.imageDim / 100));
   root.style.setProperty('--backdrop-image-blur', `${appearance.imageBlur}px`);
 
-  const background = appearance.theme === 'amoled' ? '#000000' : paletteOf(appearance).background;
+  // Use palette background for both themes
+  const background = paletteOf(appearance).background;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', background);
 }
