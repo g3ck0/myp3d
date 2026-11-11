@@ -85,7 +85,7 @@ const sameOrder = (left: MP3Info[], right: MP3Info[]) =>
 export function PlaylistEditPage({ playlistId, onBack }: PlaylistEditPageProps) {
   const navigate = useNavigate();
   const player = usePlayer();
-  const { favorites, openMenu, menuFilename } = useTrackActions();
+  const { favorites, deleting, requestDelete, openMenu, menuFilename } = useTrackActions();
   const { showSuccess, showError, showInfo, clearToast } = useToast();
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState('');
@@ -220,6 +220,10 @@ export function PlaylistEditPage({ playlistId, onBack }: PlaylistEditPageProps) 
   const removeSelected = () => {
     setRows((current) => current.filter((row) => !isRowSelected(row)));
     selection.clear();
+  };
+
+  const deleteSelectedFromDisk = () => {
+    requestDelete(selection.filenames, dropDeleted);
   };
 
   const browsePresence = usePresence(!hasSelection);
@@ -414,6 +418,7 @@ export function PlaylistEditPage({ playlistId, onBack }: PlaylistEditPageProps) 
                 <IconButton icon={ArrowDownToLine} label="Move to bottom" onClick={() => moveSelected(false)} disabled={!canEdit} />
                 <IconButton icon={ListPlus} label="Add to playlist" onClick={() => setAddToPlaylistOpen(true)} />
                 <IconButton icon={ListMinus} label="Remove from playlist" variant="danger" onClick={removeSelected} disabled={!canEdit} />
+                <IconButton icon={Trash2} label="Delete from disk" variant="danger" onClick={deleteSelectedFromDisk} disabled={!canEdit || deleting} />
               </div>
             ) : (
               <div key="browse" className="library-toolbar__set" data-state={toolbarState}>
